@@ -3,6 +3,9 @@
 # - https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 # - https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions
 # - https://help.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
+# - https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts
+# - https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
+# - https://github.community/t/continue-on-error-allow-failure-ui-indication/16773
 
 name: python
 
@@ -13,12 +16,13 @@ on:
     branches: [ master ]
 
 jobs:
+
   build:
 
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.5, 3.6, 3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
@@ -26,7 +30,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: pip
+    - name: pip install
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -53,24 +57,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    # https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts
     - name: download wheel
       uses: actions/download-artifact@v2
       with:
         name: wheel
+        working-directory: dist
 
     - name: ls
       run: |
         ls -r
 
-    # https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
     - name: test.pypi
       uses: pypa/gh-action-pypi-publish@master
       with:
         password: ${{ secrets.test_pypi_password }}
         repository_url: https://test.pypi.org/legacy/
-        packages_dir: wheel
-      # https://github.community/t/continue-on-error-allow-failure-ui-indication/16773
       if: success() || failure()
 
     - name: pypi
@@ -78,4 +79,3 @@ jobs:
       uses: pypa/gh-action-pypi-publish@master
       with:
         password: ${{ secrets.pypi_password }}
-        packages_dir: wheel
