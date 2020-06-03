@@ -13,9 +13,9 @@ name: python
 on:
   push:
     branches: [ master ]
+    tags: [ 0.* ]
   pull_request:
     branches: [ master ]
-    tags: [ 0.* ]
 
 jobs:
 
