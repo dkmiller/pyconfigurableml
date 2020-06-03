@@ -45,7 +45,7 @@ jobs:
     - name: upload wheel
       uses: actions/upload-artifact@v2
       with:
-        name: wheel
+        name: dist
         path: dist
 
   publish:
@@ -57,7 +57,7 @@ jobs:
     - name: download wheel
       uses: actions/download-artifact@v2
       with:
-        name: wheel
+        name: dist
 
     # https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts
     - name: test.pypi
