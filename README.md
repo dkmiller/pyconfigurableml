@@ -13,3 +13,9 @@ Create and publish a Python package for handling configuration (via config.yml
 or command line args) logging, etc.
 
 Calculate and publish code coverage.
+
+Follow badges at [typeguard](https://github.com/agronholm/typeguard).
+
+- [Coveralls](https://docs.coveralls.io/python)
+- [Pypi badge](https://thomas-cokelaer.info/blog/2014/08/1013/), include
+  number of downloads.
