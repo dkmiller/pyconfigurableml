@@ -45,7 +45,7 @@ jobs:
     - name: upload wheel
       uses: actions/upload-artifact@v2
       with:
-        name: dist
+        name: wheel
         path: dist
 
   publish:
@@ -53,18 +53,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    # https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
+    # https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts
     - name: download wheel
       uses: actions/download-artifact@v2
       with:
-        name: dist
+        name: wheel
 
-    # https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts
+    - name: ls
+        run: |
+          ls -r
+
+    # https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
     - name: test.pypi
       uses: pypa/gh-action-pypi-publish@master
       with:
         password: ${{ secrets.test_pypi_password }}
         repository_url: https://test.pypi.org/legacy/
+        packages_dir: wheel
       # https://github.community/t/continue-on-error-allow-failure-ui-indication/16773
       if: success() || failure()
 
@@ -73,3 +78,4 @@ jobs:
       uses: pypa/gh-action-pypi-publish@master
       with:
         password: ${{ secrets.pypi_password }}
+        packages_dir: wheel
