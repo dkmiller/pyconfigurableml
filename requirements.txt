@@ -1,0 +1,10 @@
+autopep8
+coveralls>=2.0.0
+flake8
+pylint
+pytest
+pyyaml
+twine
+typeguard
+# https://stackoverflow.com/a/44862371
+wheel
