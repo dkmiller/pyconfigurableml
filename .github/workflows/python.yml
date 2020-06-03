@@ -39,3 +39,15 @@ jobs:
     - name: build wheel
       run: |
         python setup.py sdist bdist_wheel
+    
+    # https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
+    - name: test.pypi
+      uses: pypa/gh-actions-pypi-publish@master
+      with:
+        password: ${{ secrets.test_pypi_password }}
+        repository_url: https://test.pypi.org/legacy/
+    - name: pypi
+      if: startsWith(github.events.ref, 'refs/tags')
+      uses: pypa/gh-actions-pypi-publish@master
+      with:
+        password: ${{ secrets.pypi_password }}

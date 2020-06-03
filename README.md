@@ -1,5 +1,7 @@
 # Configurable ML
 
+![python](https://github.com/dkmiller/pyconfigurableml/workflows/python/badge.svg)
+
 Python utilities for easily configurable machine learning.
 
 ## Roadmap
