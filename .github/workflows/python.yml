@@ -6,6 +6,7 @@
 # - https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts
 # - https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 # - https://github.community/t/continue-on-error-allow-failure-ui-indication/16773
+# - https://github.com/actions/download-artifact
 
 name: python
 
@@ -42,7 +43,13 @@ jobs:
         pylint pyconfigurableml
     - name: pytest
       run: |
-        pytest
+        coverage run --source=pyconfigurableml -m pytest
+    - name: publish code coverage
+      run: |
+        coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        COVERALLS_PARALLEL: true
     - name: build wheel
       run: |
         python setup.py sdist bdist_wheel
@@ -59,17 +66,6 @@ jobs:
 
     - name: download wheel
       uses: actions/download-artifact@v2
-
-    - name: ls
-      run: |
-        ls -r
-
-    - name: test.pypi
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        password: ${{ secrets.test_pypi_password }}
-        repository_url: https://test.pypi.org/legacy/
-      if: success() || failure()
 
     - name: pypi
       if: startsWith(github.events.ref, 'refs/tags')
