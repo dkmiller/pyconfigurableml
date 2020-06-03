@@ -8,6 +8,21 @@ Python utilities for easily configurable machine learning.
 This project utilizes the excellent tutorial
 [How to Publish an Open-Source Python Package to PyPI](https://realpython.com/pypi-publish-python-package/)
 
+## Usage
+
+```python
+from pyconfigurableml.entry import run
+
+def main(config, log):
+  # TODO: put your logic here.
+  pass
+
+if __name__ == '__main__':
+  # The main function will be called with appropriate configuration
+  # object and logger.
+  run(main)
+```
+
 ## Roadmap
 
 Create and publish a Python package for handling configuration (via config.yml

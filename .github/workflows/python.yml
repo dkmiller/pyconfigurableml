@@ -13,7 +13,7 @@ name: python
 on:
   push:
     branches: [ master ]
-    tags: [ 0.* ]
+    tags: [ 'v0.*' ]
   pull_request:
     branches: [ master ]
 
