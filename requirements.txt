@@ -4,3 +4,5 @@ pytest
 pyyaml
 twine
 typeguard
+# https://stackoverflow.com/a/44862371
+wheel
