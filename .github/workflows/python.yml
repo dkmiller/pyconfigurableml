@@ -60,8 +60,8 @@ jobs:
         name: wheel
 
     - name: ls
-        run: |
-          ls -r
+      run: |
+        ls -r
 
     # https://packaging.python.org/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
     - name: test.pypi
