@@ -1,4 +1,6 @@
 flake8
 pylint
 pytest
+pyyaml
 twine
+typeguard
