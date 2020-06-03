@@ -65,7 +65,7 @@ jobs:
         password: ${{ secrets.test_pypi_password }}
         repository_url: https://test.pypi.org/legacy/
       # https://github.community/t/continue-on-error-allow-failure-ui-indication/16773
-      if: succeeded() || failed()
+      if: success() || failed()
 
     - name: pypi
       if: startsWith(github.events.ref, 'refs/tags')
