@@ -1,6 +1,7 @@
 # Configurable ML
 
-![python](https://github.com/dkmiller/pyconfigurableml/workflows/python/badge.svg)
+[![python](https://github.com/dkmiller/pyconfigurableml/workflows/python/badge.svg)](https://github.com/dkmiller/pyconfigurableml/actions?query=workflow%3Apython)
+[![Coverage Status](https://coveralls.io/repos/github/dkmiller/pyconfigurableml/badge.svg?branch=master)](https://coveralls.io/github/dkmiller/pyconfigurableml?branch=master)
 
 Python utilities for easily configurable machine learning.
 
