@@ -7,7 +7,7 @@ README = (HERE / 'README.md').read_text()
 
 setup(
     name='pyconfigurableml',
-    version='0.0.0',
+    version='0.1.0',
     description='Configurable ML in Python',
     long_description=README,
     long_description_content_type='text/markdown',
@@ -22,5 +22,7 @@ setup(
     ],
     packages=['pyconfigurableml'],
     include_package_data=True,
-    install_requires=['typeguard>=2.8.0', 'pyyaml>=5.3.1'],
+    install_requires=['typeguard>=2.8.0', 'pyyaml>=5.3.0'],
+    # https://stackoverflow.com/a/48777286
+    python_requires='~=3.6',
 )
