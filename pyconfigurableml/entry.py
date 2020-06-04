@@ -23,6 +23,8 @@ def run(main: Callable[[object, logging.Logger], None]) -> None:
     '''
     # Follow https://stackoverflow.com/a/37792573 to get the caller's file name.
     stack = inspect.stack()
+
+    # TODO: explicitly exclude anything with typeguard in the name.
     caller_file = stack[1][1]
     caller_dir = os.path.dirname(os.path.abspath(caller_file))
 
