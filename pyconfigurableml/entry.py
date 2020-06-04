@@ -4,7 +4,6 @@ Utilities around programatic entry point.
 
 
 import argparse
-import inspect
 import logging
 import os
 from typing import Callable
@@ -13,31 +12,33 @@ import yaml
 
 
 @typechecked
-def run(main: Callable[[object, logging.Logger], None]) -> None:
+def run(main: Callable[[object, logging.Logger], None],
+        file: str,
+        name: str = '__main__') -> None:
     '''
     Handle log levels and parsing a YAML configuration file. The default
     path to the configuration file is `<caller directory>/config.yml`.
 
-    WARNING: the default configuration file path does not work with decorated
-    functions, i.e. `main` should not be decorated.
+        Parameters:
+            main: programatic entry point for your program.
+            file: should be __file__ in the entry point of your script.
+            name: optionally __name__ in your script. This function will only
+                  call main if __name__ == '__main__'.
     '''
-    # Follow https://stackoverflow.com/a/37792573 to get the caller's file name.
-    stack = inspect.stack()
 
-    # TODO: explicitly exclude anything with typeguard in the name.
-    caller_file = stack[1][1]
-    caller_dir = os.path.dirname(os.path.abspath(caller_file))
+    if name == '__main__':
+        caller_dir = os.path.dirname(os.path.abspath(file))
 
-    parser = argparse.ArgumentParser()
+        parser = argparse.ArgumentParser()
 
-    parser.add_argument('--config', default=os.path.join(caller_dir, 'config.yml'))
-    parser.add_argument('--level', default='INFO')
-    args = parser.parse_args()
+        parser.add_argument('--config', default=os.path.join(caller_dir, 'config.yml'))
+        parser.add_argument('--level', default='INFO')
+        args = parser.parse_args()
 
-    with open(args.config, 'r') as file:
-        config = yaml.safe_load(file)
+        with open(args.config, 'r') as file:
+            config = yaml.safe_load(file)
 
-    logging.basicConfig(level=args.level)
-    logger = logging.getLogger()
+        logging.basicConfig(level=args.level)
+        logger = logging.getLogger()
 
-    main(config, logger)
+        main(config, logger)
