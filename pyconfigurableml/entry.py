@@ -35,8 +35,8 @@ def run(main: Callable[[object, logging.Logger], None],
         parser.add_argument('--level', default='INFO')
         args = parser.parse_args()
 
-        with open(args.config, 'r') as file:
-            config = yaml.safe_load(file)
+        with open(args.config, 'r') as config_file:
+            config = yaml.safe_load(config_file)
 
         logging.basicConfig(level=args.level)
         logger = logging.getLogger()

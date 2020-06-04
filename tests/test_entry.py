@@ -43,5 +43,7 @@ def test_if_name_not_main_then_not_called():
     '''
     def main(cfg, log):
         raise Exception('I should not be called')
-    with patch( 'argparse.ArgumentParser.parse_args', return_value=None):
-        run(main, __file__, '__not_main__')
+    # https://stackoverflow.com/a/534847
+    file = str(uuid.uuid4())
+    with patch('argparse.ArgumentParser.parse_args', return_value=None):
+        run(main, file, '__not_main__')
