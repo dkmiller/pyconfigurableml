@@ -23,4 +23,6 @@ setup(
     packages=['pyconfigurableml'],
     include_package_data=True,
     install_requires=['typeguard>=2.8.0', 'pyyaml>=5.3.0'],
+    # https://stackoverflow.com/a/48777286
+    python_requires='~=3.6',
 )

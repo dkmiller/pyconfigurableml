@@ -15,10 +15,15 @@ import yaml
 @typechecked
 def run(main: Callable[[object, logging.Logger], None]) -> None:
     '''
-    Handle log levels and parsing a YAML configuration file.
+    Handle log levels and parsing a YAML configuration file. The default
+    path to the configuration file is `<caller directory>/config.yml`.
+
+    WARNING: the default configuration file path does not work with decorated
+    functions, i.e. `main` should not be decorated.
     '''
     # Follow https://stackoverflow.com/a/37792573 to get the caller's file name.
-    caller_file = inspect.stack()[1][1]
+    stack = inspect.stack()
+    caller_file = stack[1][1]
     caller_dir = os.path.dirname(os.path.abspath(caller_file))
 
     parser = argparse.ArgumentParser()
