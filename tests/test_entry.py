@@ -47,3 +47,40 @@ def test_if_name_not_main_then_not_called():
     file = str(uuid.uuid4())
     with patch('argparse.ArgumentParser.parse_args', return_value=None):
         run(main, file, '__not_main__')
+
+
+# @pytest.mark.parametrize('config_name,level,called,main', [
+#     ('config1.yml', 'info', 'hi', lambda _, l: l.info('hi')),
+#     ('config1.yml', 'warning', 'bar', lambda c, l: l.warning(c['foo']))
+# ])
+def test_munchify_works():
+    def main(cfg, l):
+        print(cfg.attr)
+    
+
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    config_path = os.path.join(dir_path, 'config2.yml')
+
+    # https://stackoverflow.com/a/37343818
+    with patch(
+            'argparse.ArgumentParser.parse_args',
+            return_value=argparse.Namespace(config=config_path, level='info')
+            ):
+        run(main, __file__)
+
+
+def test_munchify_not_called():
+    def main(cfg, l):
+        print(cfg.attr)
+    
+
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    config_path = os.path.join(dir_path, 'config1.yml')
+
+    # https://stackoverflow.com/a/37343818
+    with pytest.raises(AttributeError):
+        with patch(
+            'argparse.ArgumentParser.parse_args',
+            return_value=argparse.Namespace(config=config_path, level='info')
+            ):
+            run(main, __file__)

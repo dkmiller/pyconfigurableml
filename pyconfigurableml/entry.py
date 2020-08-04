@@ -11,6 +11,30 @@ from typeguard import typechecked
 import yaml
 
 
+from pyconfigurableml.azure import resolve_azure_secrets
+from pyconfigurableml.logging import set_logger_levels
+
+
+from pyconfigurableml._decorators import pass_decorator
+
+
+@pass_decorator('munchify')
+@typechecked
+def munchify(config: object, m_config, log: logging.Logger) -> object:
+    if m_config == True:
+        from munch import DefaultMunch
+        config = DefaultMunch.fromDict(config)
+
+    return config
+
+
+config_actions = [
+    set_logger_levels,
+    resolve_azure_secrets,
+    munchify
+]
+
+
 @typechecked
 def run(main: Callable[[object, logging.Logger], None],
         file: str,
@@ -40,5 +64,8 @@ def run(main: Callable[[object, logging.Logger], None],
 
         logging.basicConfig(level=args.level)
         logger = logging.getLogger()
+
+        for f in config_actions:
+            config = f(config, logger)
 
         main(config, logger)
