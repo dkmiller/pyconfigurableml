@@ -1,6 +1,6 @@
 import logging
 from typeguard import typechecked
-from typing import Dict
+from typing import Dict, Union
 
 
 
@@ -9,7 +9,7 @@ from pyconfigurableml._decorators import pass_decorator
 
 @pass_decorator('logging')
 @typechecked
-def set_logger_levels(config: object, l_config: Dict[str, str], log: logging.Logger) -> object:
+def set_logger_levels(config, l_config: Dict[str, str], log: logging.Logger) -> object:
     '''
     Set per-logger minimum levels according to the configuration.
 

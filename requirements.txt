@@ -1,6 +1,9 @@
 autopep8
+azure-identity
+azure-keyvault-secrets
 coveralls>=2.0.0
 flake8
+munch
 pylint
 pytest
 pyyaml

@@ -23,6 +23,11 @@ setup(
     packages=['pyconfigurableml'],
     include_package_data=True,
     install_requires=['typeguard>=2.8.0', 'pyyaml>=5.3.0'],
+    # https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-extras-optional-features-with-their-own-dependencies
+    extra_requires={
+        'azure': ['azure-identity>=1.3.1', 'azure-keyvault-secrets>=4.1.0'],
+        'munch': ['munch>=2.5.0']
+    },
     # https://stackoverflow.com/a/48777286
     python_requires='~=3.6',
 )

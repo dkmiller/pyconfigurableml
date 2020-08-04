@@ -1,9 +1,12 @@
 '''
 TODO: docstring.
 '''
+
 import logging
 from typing import Dict, Iterable, Tuple
 
+
+_CREDENTIALS_ = None
 _KEY_VAULT_CLIENT_DICT_ = None
 
 
@@ -24,15 +27,16 @@ def get_azure_secret(secret_identifier: str) -> str:
 
     (kv_name, secret_name) = parse_azure_secret_identifier(secret_identifier)
 
-    global _KEY_VAULT_CLIENT_DICT_
+    global _CREDENTIALS_, _KEY_VAULT_CLIENT_DICT_
+
     if _KEY_VAULT_CLIENT_DICT_ is None:
+        _CREDENTIALS_ = DefaultAzureCredential()
         _KEY_VAULT_CLIENT_DICT_ = {}
     if kv_name in _KEY_VAULT_CLIENT_DICT_:
         client = _KEY_VAULT_CLIENT_DICT_[kv_name]
     else:
         vault_url = f'https://{kv_name}.vault.azure.net/'
-        creds = DefaultAzureCredential()
-        client = SecretClient(vault_url, creds)
+        client = SecretClient(vault_url, _CREDENTIALS_)
         _KEY_VAULT_CLIENT_DICT_[kv_name] = client
 
     print(f'\n\n{secret_name}\n\n')
