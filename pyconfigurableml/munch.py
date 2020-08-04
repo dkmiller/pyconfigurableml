@@ -2,7 +2,7 @@ from pyconfigurableml._decorators import pass_decorator
 from typeguard import typechecked
 
 
-@pass_decorator('munchify')
+@pass_decorator(__name__)
 @typechecked
 def munchify(config, inner_config: bool):
     '''

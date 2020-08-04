@@ -9,7 +9,7 @@ from unittest.mock import patch
 ]) 
 def test_munchify_called_correctly(config, inner_config):
     if inner_config:
-        config['pyconfigurableml'] = {'munchify': True}
+        config['pyconfigurableml'] = {'munch': True}
 
     with patch('pyconfigurableml.munch.munchify_transform') as mock_transform:
         munchify(config)

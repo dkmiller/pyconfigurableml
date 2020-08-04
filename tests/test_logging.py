@@ -27,12 +27,16 @@ def test_set_logger_levels(original_levels, configured_levels, new_levels):
         assert v == l.level
 
 
-def test_logging_e2e():
+@pytest.mark.parametrize('file, levels', [
+    ('config2.yml', {'foo': 0}),
+    ('config3.yml', {'azure.core.pipeline.policies.http_logging_policy': 30})
+])
+def test_test_set_logger_levels_from_config_file(file, levels):
     def main(cfg, l):
         pass
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    config_path = os.path.join(dir_path, 'config3.yml')
+    config_path = os.path.join(dir_path, file)
 
     # https://stackoverflow.com/a/37343818
     with patch(
@@ -41,4 +45,5 @@ def test_logging_e2e():
             ):
         run(main, __file__)
 
-    assert 30 == logging.getLogger('azure.core.pipeline.policies.http_logging_policy').level
+    for k, v in levels.items():
+        assert v == logging.getLogger(k).level

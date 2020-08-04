@@ -1,19 +1,24 @@
 import functools
 
 
-def pass_decorator(param: str):
+def pass_decorator(namespace: str):
+    '''
+    TODO: docstring.
+    '''
 
     def decorator(func):
         @functools.wraps(func)
         def inner_func(config):
+            inner_config = config
+
             try:
-                if isinstance(config, list):
-                    raise Exception(str(func) + '   ' + str(config))
-                inner_config = config['pyconfigurableml']
-                inner_config = inner_config[param]
-                return func(config, inner_config)
+                for name in namespace.split('.'):
+                    inner_config = inner_config[name]
             except KeyError:
                 return config
+
+            return func(config, inner_config)
+
         return inner_func
 
     return decorator

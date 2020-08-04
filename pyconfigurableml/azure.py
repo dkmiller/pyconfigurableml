@@ -66,7 +66,7 @@ def _recurse_resolve_azure_secrets(config):
     return config
 
 
-@pass_decorator('azure')
+@pass_decorator(__name__)
 @typechecked
 def resolve_azure_secrets(config, inner_config: Dict[str, object]):
 
