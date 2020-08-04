@@ -1,0 +1,4 @@
+pyconfigurableml:
+
+  logging:
+    azure.core.pipeline.policies.http_logging_policy: WARN

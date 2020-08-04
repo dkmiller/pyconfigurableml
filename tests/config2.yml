@@ -1,11 +1,2 @@
 pyconfigurableml:
-
-  # azure:
-  #   key_vault:
-  #     resolve_identifiers: True
-  #   tenant: some_azure_tenant
-
-  # logging:
-  #   azure.core.pipeline.policies.http_logging_policy: WARN
-
   munchify: True
