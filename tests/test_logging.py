@@ -19,7 +19,7 @@ def test_set_logger_levels(original_levels, configured_levels, new_levels):
 
     configured_levels = {'pyconfigurableml': {'logging': configured_levels}}
 
-    result = set_logger_levels(configured_levels, logging.getLogger())
+    result = set_logger_levels(configured_levels)
     assert result == configured_levels
     
     for k, v in new_levels.items():
