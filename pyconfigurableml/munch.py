@@ -6,10 +6,18 @@ from typeguard import typechecked
 @typechecked
 def munchify(config, inner_config: bool):
     '''
-    TODO: docstring.
+    Decide (using `inner_config`) whether to apply `munchify_transform` to
+    `config`, and do so if necessary.
     '''
     if inner_config:
-        from munch import DefaultMunch
-        config = DefaultMunch.fromDict(config)
+        config = munchify_transform(config)
 
     return config
+
+
+def munchify_transform(config):
+    '''
+    Convert a nested dictionary into a JavaScript-style object (Munch).
+    '''
+    from munch import DefaultMunch
+    return DefaultMunch.fromDict(config)

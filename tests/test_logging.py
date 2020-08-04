@@ -11,7 +11,7 @@ from pyconfigurableml.logging import set_logger_levels
     ({'a': 'INFO'}, {'a': 'WARN'}, {'a': 30}),
     ({'a': 'ERROR'}, {'a': 'INFO'}, {'a': 40}),
     ({'a': 'INFO'}, {'b': 'ERROR'}, {'a': 20, 'b': 40})
-]) 
+])
 def test_set_logger_levels(original_levels, configured_levels, new_levels):
     for k, v in original_levels.items():
         l = logging.getLogger(k)

@@ -23,4 +23,5 @@ def set_logger_levels(config, l_config: Dict[str, str]):
         log = logging.getLogger(__name__)
         log.info(f'Setting log level for {name} to {level}.')
         logger.setLevel(level)
+
     return config
