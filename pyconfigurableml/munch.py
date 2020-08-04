@@ -1,8 +1,8 @@
-from pyconfigurableml._decorators import pass_decorator
+from pyconfigurableml._core import run_with_specified_config
 from typeguard import typechecked
 
 
-@pass_decorator(__name__)
+@run_with_specified_config(__name__)
 @typechecked
 def munchify(config, inner_config: bool):
     '''

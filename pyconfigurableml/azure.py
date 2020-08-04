@@ -3,7 +3,7 @@ TODO: docstring.
 '''
 
 import logging
-from pyconfigurableml._decorators import pass_decorator
+from pyconfigurableml._core import run_with_specified_config, T
 import re
 from typing import Dict, Iterable, Tuple, Union
 from typeguard import typechecked
@@ -66,9 +66,9 @@ def _recurse_resolve_azure_secrets(config):
     return config
 
 
-@pass_decorator(__name__)
+@run_with_specified_config(__name__)
 @typechecked
-def resolve_azure_secrets(config, inner_config: Dict[str, object]):
+def resolve_azure_secrets(config: T, inner_config: Dict[str, object]) -> T:
 
     if inner_config['key_vault']['resolve_identifiers'] == True:
         from azure.identity import DefaultAzureCredential
