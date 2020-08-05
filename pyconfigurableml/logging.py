@@ -1,7 +1,7 @@
 import logging
 from pyconfigurableml._core import run_with_specified_config, T
 from typeguard import typechecked
-from typing import Dict, TypeVar, Union
+from typing import Dict
 
 
 @run_with_specified_config(__name__)

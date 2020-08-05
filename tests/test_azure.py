@@ -1,5 +1,4 @@
-import azure
-from pyconfigurableml.azure import parse_azure_secret_identifier, resolve_azure_secrets, _get_azure_secret
+from pyconfigurableml.azure import parse_azure_secret_identifier, resolve_azure_secrets
 import pytest
 import sys
 from unittest.mock import patch, MagicMock
@@ -34,7 +33,7 @@ def test_resolve_azure_secrets(config, value, expected):
     ret = MagicMock()
     ret.value = value
     secret_client = MagicMock()
-    secret_client.get_secret = MagicMock(return_value = ret)
+    secret_client.get_secret = MagicMock(return_value=ret)
     with patch('azure.keyvault.secrets.SecretClient', return_value=secret_client):
         result = resolve_azure_secrets(config)
     assert expected == result

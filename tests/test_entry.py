@@ -51,7 +51,7 @@ def test_if_name_not_main_then_not_called():
 
 
 def test_munchify_works():
-    def main(cfg, l):
+    def main(cfg, _):
         print(cfg.attr)
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -66,7 +66,7 @@ def test_munchify_works():
 
 
 def test_munchify_not_called():
-    def main(cfg, l):
+    def main(cfg, _):
         print(cfg.attr)
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -77,13 +77,8 @@ def test_munchify_not_called():
         with patch(
             'argparse.ArgumentParser.parse_args',
             return_value=argparse.Namespace(config=config_path, level='info')
-            ):
+        ):
             run(main, __file__)
-
-
-
-
-
 
 
 @pytest.mark.parametrize('file, levels', [
@@ -91,7 +86,7 @@ def test_munchify_not_called():
     ('config3.yml', {'azure.core.pipeline.policies.http_logging_policy': 30})
 ])
 def test_test_set_logger_levels_from_config_file(file, levels):
-    def main(cfg, l):
+    def main(cfg, _):
         pass
 
     dir_path = os.path.dirname(os.path.realpath(__file__))

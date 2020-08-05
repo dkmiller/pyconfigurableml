@@ -1,8 +1,4 @@
-import argparse
 import logging
-import os
-from unittest.mock import patch
-from pyconfigurableml.entry import run
 import pytest
 from pyconfigurableml.logging import set_logger_levels
 
@@ -14,14 +10,14 @@ from pyconfigurableml.logging import set_logger_levels
 ])
 def test_set_logger_levels(original_levels, configured_levels, new_levels):
     for k, v in original_levels.items():
-        l = logging.getLogger(k)
-        l.setLevel(v)
+        logger = logging.getLogger(k)
+        logger.setLevel(v)
 
     configured_levels = {'pyconfigurableml': {'logging': configured_levels}}
 
     result = set_logger_levels(configured_levels)
     assert result == configured_levels
-    
+
     for k, v in new_levels.items():
-        l = logging.getLogger(k)
-        assert v == l.level
+        logger = logging.getLogger(k)
+        assert v == logger.level

@@ -1,5 +1,5 @@
 '''
-TODO: docstring.
+Internal objects and methods.
 '''
 
 import functools
@@ -11,9 +11,11 @@ T = TypeVar('T')
 
 
 @typechecked
-def run_with_specified_config(namespace: str) -> Callable[[Callable[[T, object], T]], Callable[[T], T]]:
+def run_with_specified_config(namespace: str) -> \
+        Callable[[Callable[[T, object], T]], Callable[[T], T]]:
     '''
-    TODO: docstring.
+    Run a "config modification method" which depends on configuration in a
+    specific "path".
 
         Parameters:
             namespace: Python namespace corresponding to the field to obtain

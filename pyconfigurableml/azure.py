@@ -1,8 +1,9 @@
 '''
-TODO: docstring.
+Logic for swapping out Azure Key Vault secret identifiers with the secret
+values.
 '''
 
-import logging
+
 from pyconfigurableml._core import run_with_specified_config
 import re
 from typing import Dict, Iterable, Tuple, Union
@@ -15,14 +16,18 @@ _KEY_VAULT_CLIENT_DICT_ = None
 
 
 @typechecked
-def parse_azure_secret_identifier(secret_identifier: str) -> Tuple[bool, Union[None, str], Union[None, str], Union[None, str]]:
+def parse_azure_secret_identifier(secret_identifier: str) -> \
+        Tuple[bool, Union[None, str], Union[None, str], Union[None, str]]:
     '''
-    TODO: docstring.
+    Parse the reference to an Azure Key Vault secret (optionally with version).
+    The first member of the output will be `True` if parse succeeded, `False`
+    otherwise. The other members are (key vault name, secret name, version).
     '''
     parsed = urllib.parse.urlparse(secret_identifier)
 
     m1 = re.match(r'([\w\-]+)\.vault\.azure\.net', parsed.netloc)
-    if parsed.scheme == 'https' and not parsed.params and not parsed.query and not parsed.fragment and m1:
+    if parsed.scheme == 'https' and not parsed.params and not parsed.query \
+            and not parsed.fragment and m1:
         kv_name = m1.groups()[0]
         path = [x for x in parsed.path.split('/') if x]
         secret_name = path[1]
@@ -33,11 +38,9 @@ def parse_azure_secret_identifier(secret_identifier: str) -> Tuple[bool, Union[N
 
 
 @typechecked
-def _get_azure_secret(kv_name: str, secret_name: str, sec_version: Union[None, str]) -> str:
-    '''
-    TODO: docstring.
-    '''
-
+def _get_azure_secret(kv_name: str,
+                      secret_name: str,
+                      sec_version: Union[None, str]) -> str:
     global _CREDENTIALS_, _KEY_VAULT_CLIENT_DICT_
 
     if _KEY_VAULT_CLIENT_DICT_ is None:
@@ -62,20 +65,24 @@ def _recurse_resolve_azure_secrets(config):
         config = {k: _recurse_resolve_azure_secrets(v) for (k, v) in config.items()}
     elif isinstance(config, Iterable):
         config = list(map(_recurse_resolve_azure_secrets, config))
-    
+
     return config
 
 
 @run_with_specified_config(__name__)
 @typechecked
 def resolve_azure_secrets(config, inner_config: Dict[str, Union[bool, str]]):
+    '''
+    Resolve all references to Azure Key Vault secrets with the values of those
+    secrets.
+    '''
 
     if inner_config['resolve_secret_identifiers']:
         from azure.identity import DefaultAzureCredential
         global _CREDENTIALS_
 
         tenant = inner_config['tenant'] if 'tenant' in inner_config else None
-        _CREDENTIALS_ = DefaultAzureCredential(shared_cache_tenant_id = tenant)
+        _CREDENTIALS_ = DefaultAzureCredential(shared_cache_tenant_id=tenant)
         config = _recurse_resolve_azure_secrets(config)
 
     return config

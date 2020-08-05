@@ -50,7 +50,7 @@ def run(main: Callable[[object, logging.Logger], None],
 
         logging.basicConfig(level=args.level)
 
-        for f in config_actions:        
+        for f in config_actions:
             config = f(config)
 
         logger = logging.getLogger()
