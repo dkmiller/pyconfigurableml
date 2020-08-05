@@ -6,7 +6,7 @@ values.
 
 # The latter is a known PyLint bug.
 # https://github.com/PyCQA/pylint/issues/3507
-# pylint: disable=global-statement,isinstance-second-argument-not-valid-type
+# pylint: disable=global-statement,isinstance-second-argument-not-valid-type,no-name-in-module
 
 
 import re
