@@ -1,8 +1,0 @@
-foo: https://key-vault-name.vault.azure.net/secrets/secret-name
-bar: https://key-vault-name.vault.azure.net/secrets/secret-name/secret-version/
-
-pyconfigurableml:
-
-  azure:
-    resolve_secret_identifiers: True
-    tenant: f20a9c8c-e28c-43c6-a286-b590d9669d39
