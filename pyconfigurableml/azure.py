@@ -3,7 +3,7 @@ TODO: docstring.
 '''
 
 import logging
-from pyconfigurableml._core import run_with_specified_config, T
+from pyconfigurableml._core import run_with_specified_config
 import re
 from typing import Dict, Iterable, Tuple, Union
 from typeguard import typechecked
@@ -33,7 +33,7 @@ def parse_azure_secret_identifier(secret_identifier: str) -> Tuple[bool, Union[N
 
 
 @typechecked
-def get_azure_secret(kv_name: str, secret_name: str, sec_version: Union[None, str]) -> str:
+def _get_azure_secret(kv_name: str, secret_name: str, sec_version: Union[None, str]) -> str:
     '''
     TODO: docstring.
     '''
@@ -57,7 +57,7 @@ def _recurse_resolve_azure_secrets(config):
     if isinstance(config, str):
         (success, kv_name, secret_name, ver) = parse_azure_secret_identifier(config)
         if success:
-            config = get_azure_secret(kv_name, secret_name, ver)
+            config = _get_azure_secret(kv_name, secret_name, ver)
     elif isinstance(config, dict):
         config = {k: _recurse_resolve_azure_secrets(v) for (k, v) in config.items()}
     elif isinstance(config, Iterable):
@@ -68,9 +68,9 @@ def _recurse_resolve_azure_secrets(config):
 
 @run_with_specified_config(__name__)
 @typechecked
-def resolve_azure_secrets(config: T, inner_config: Dict[str, object]) -> T:
+def resolve_azure_secrets(config, inner_config: Dict[str, Union[bool, str]]):
 
-    if inner_config['key_vault']['resolve_identifiers'] == True:
+    if inner_config['resolve_secret_identifiers']:
         from azure.identity import DefaultAzureCredential
         global _CREDENTIALS_
 

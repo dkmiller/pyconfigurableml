@@ -1,5 +1,6 @@
 from pyconfigurableml.munch import munchify, munchify_transform
 import pytest
+import sys
 from unittest.mock import patch
 
 
@@ -26,3 +27,20 @@ def test_munchify_called_correctly(config, inner_config):
 def test_munchify_transform(input, func, result):
     transformed = munchify_transform(input)
     assert result == func(transformed)
+
+
+@pytest.mark.parametrize('config, namespace, works', [
+    ({'a': 1}, 'munch', True),
+    ({'pyconfigurableml': {'munch': False}}, 'munch', True),
+    ({'pyconfigurableml': {'munch': True}}, 'munch', False)
+]) 
+def test_munchify_works_with_disabled_imports(config, namespace, works):
+    # https://stackoverflow.com/a/1350574
+    del sys.modules[namespace]
+    sys.modules[namespace] = None
+
+    if works:
+            munchify(config)
+    else:
+        with pytest.raises(ImportError):
+            munchify(config)
