@@ -7,7 +7,7 @@ README = (HERE / 'README.md').read_text()
 
 setup(
     name='pyconfigurableml',
-    version='0.2.0',
+    version='0.3.0',
     description='Configurable ML in Python',
     long_description=README,
     long_description_content_type='text/markdown',
@@ -24,7 +24,7 @@ setup(
     include_package_data=True,
     install_requires=['typeguard>=2.9.1', 'pyyaml>=5.3.1'],
     # https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-extras-optional-features-with-their-own-dependencies
-    extra_requires={
+    extras_require={
         'azure': ['azure-identity>=1.3.1', 'azure-keyvault-secrets>=4.1.0'],
         'munch': ['munch>=2.5.0']
     },
