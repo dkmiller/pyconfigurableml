@@ -1,5 +1,10 @@
-from pyconfigurableml._core import run_with_specified_config
+'''
+Logic for converting "nested Python objects" to JavaScript-style objects.
+'''
+
+
 from typeguard import typechecked
+from pyconfigurableml._core import run_with_specified_config
 
 
 @run_with_specified_config(__name__)

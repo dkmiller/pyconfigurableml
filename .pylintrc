@@ -1,4 +1,6 @@
 [FORMAT]
 # Good variable names which should always be accepted, separated by a comma
 # https://stackoverflow.com/a/35182977
-good-names=df
+good-names=df,T
+
+disable=import-outside-toplevel

@@ -4,11 +4,16 @@ values.
 '''
 
 
-from pyconfigurableml._core import run_with_specified_config
+# The latter is a known PyLint bug.
+# https://github.com/PyCQA/pylint/issues/3507
+# pylint: disable=global-statement,isinstance-second-argument-not-valid-type
+
+
 import re
 from typing import Dict, Iterable, Tuple, Union
-from typeguard import typechecked
 import urllib.parse
+from typeguard import typechecked
+from pyconfigurableml._core import run_with_specified_config
 
 
 _CREDENTIALS_ = None
@@ -25,16 +30,16 @@ def parse_azure_secret_identifier(secret_identifier: str) -> \
     '''
     parsed = urllib.parse.urlparse(secret_identifier)
 
-    m1 = re.match(r'([\w\-]+)\.vault\.azure\.net', parsed.netloc)
+    match = re.match(r'([\w\-]+)\.vault\.azure\.net', parsed.netloc)
     if parsed.scheme == 'https' and not parsed.params and not parsed.query \
-            and not parsed.fragment and m1:
-        kv_name = m1.groups()[0]
+            and not parsed.fragment and match:
+        kv_name = match.groups()[0]
         path = [x for x in parsed.path.split('/') if x]
         secret_name = path[1]
         secret_version = path[2] if len(path) == 3 else None
         return (True, kv_name, secret_name, secret_version)
-    else:
-        return (False, None, None, None)
+
+    return (False, None, None, None)
 
 
 @typechecked
