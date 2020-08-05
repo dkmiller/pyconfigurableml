@@ -3,12 +3,27 @@ Utilities around programatic entry point.
 '''
 
 
+# PyLint doesn't recognize that the decorators for, e.g. munchify, change
+# method signature.
+# pylint: disable=no-value-for-parameter
+
+
 import argparse
 import logging
 import os
 from typing import Callable
 from typeguard import typechecked
 import yaml
+import pyconfigurableml.azure
+import pyconfigurableml.logging
+import pyconfigurableml.munch
+
+
+config_actions = [
+    pyconfigurableml.logging.set_logger_levels,
+    pyconfigurableml.azure.resolve_azure_secrets,
+    pyconfigurableml.munch.munchify
+]
 
 
 @typechecked
@@ -39,6 +54,9 @@ def run(main: Callable[[object, logging.Logger], None],
             config = yaml.safe_load(config_file)
 
         logging.basicConfig(level=args.level)
-        logger = logging.getLogger()
 
+        for func in config_actions:
+            config = func(config)
+
+        logger = logging.getLogger()
         main(config, logger)
