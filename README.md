@@ -58,6 +58,11 @@ pyconfigurableml:
     # "default Azure credential" object.
     tenant: 2b9d773f-f2b1-43e7-8a53-bbe28bbb0c6b
 
+  # TODO: what does this do?
+  files:
+    .data/resnet.tar.gz: https://github.com/onnx/models/raw/master/vision/classification/resnet/model/resnet18-v2-7.tar.gz
+    .data/labels.txt: https://raw.githubusercontent.com/onnx/models/master/vision/classification/synset.txt
+
   # Dictionary mapping logger names to minimum levels. This is convenient for
   # suppressing overly verbose logs from consumed libraries.
   logging:
@@ -68,3 +73,7 @@ pyconfigurableml:
   # a.b.
   munch: True
 ```
+
+## Tests
+
+Can use `run` inside `module_setup`...
