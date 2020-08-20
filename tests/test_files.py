@@ -1,7 +1,11 @@
-import logging
 import os.path
+from unittest.mock import patch
 import pytest
-from pyconfigurableml.files import download_url_to_file, download_url_to_file_if_not_exists, download_urls_to_files_if_not_exist
+from pyconfigurableml.files import (
+    download_url_to_file,
+    download_url_to_file_if_not_exists,
+    download_urls_to_files_if_not_exist
+)
 
 
 @pytest.mark.parametrize('url,file_name', [
@@ -15,6 +19,19 @@ def test_download_url_to_file(url, file_name, tmpdir):
     download_url_to_file(url, path)
 
     assert os.path.isfile(path)
+
+
+@pytest.mark.parametrize('url,file_name, e', [
+    ('https://picsum.photos/id/237/200', 'foo.png', ArithmeticError)
+])
+def test_download_url_to_file__cleans_up_if_failure(url, file_name, e):
+    assert not os.path.isfile(file_name)
+
+    with patch('shutil.copyfileobj', side_effect=e('msg')):
+        with pytest.raises(e):
+            download_url_to_file(url, file_name)
+
+    assert not os.path.isfile(file_name)
 
 
 @pytest.mark.parametrize('url,file_name', [
@@ -78,7 +95,7 @@ def test_download_urls_to_files_if_not_exist(mapping, tmpdir):
 ])
 def test_download_urls_to_files_if_not_exist__when_files_not_exist(mapping, tmpdir):
     mapping_new = {}
-    for k, v in mapping.items():     
+    for k, v in mapping.items():
         path = tmpdir.join(k)
         path.write('content')
         mapping_new[str(path)] = v

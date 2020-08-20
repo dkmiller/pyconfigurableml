@@ -3,4 +3,4 @@
 # https://stackoverflow.com/a/35182977
 good-names=df,T
 
-disable=import-outside-toplevel
+disable=import-outside-toplevel,logging-fstring-interpolation
