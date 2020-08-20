@@ -15,6 +15,7 @@ from typing import Callable
 from typeguard import typechecked
 import yaml
 import pyconfigurableml.azure
+import pyconfigurableml.files
 import pyconfigurableml.logging
 import pyconfigurableml.munch
 
@@ -22,6 +23,7 @@ import pyconfigurableml.munch
 config_actions = [
     pyconfigurableml.logging.set_logger_levels,
     pyconfigurableml.azure.resolve_azure_secrets,
+    pyconfigurableml.files.ensure_files_exist,
     pyconfigurableml.munch.munchify
 ]
 

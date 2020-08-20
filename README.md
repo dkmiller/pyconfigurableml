@@ -29,6 +29,20 @@ if __name__ == '__main__':
 run(main, __file__, __name__)
 ```
 
+You may also use this library to configure a set of unit tests. If you're using
+PyTest, 
+
+```python
+from pyconfigurableml.entry import run
+
+def custom_setup_logic(config, log):
+  # TODO: put your logic here.
+  pass
+
+def setup_module(module):
+  run(custom_setup_logic, __file__)
+```
+
 ## Configuring this library
 
 In addition to using pyconfigurableml to parse and inject configuration into
@@ -57,6 +71,14 @@ pyconfigurableml:
     # (Optional) Azure Active Directory tenant ID to use when initializing a
     # "default Azure credential" object.
     tenant: 2b9d773f-f2b1-43e7-8a53-bbe28bbb0c6b
+
+  # Ensure files downloaded from the configured URLs exist at these paths
+  # (relative to working directory). This library does not (yet) handle
+  # authenticating against files stored in enterprise storage accounts (e.g.,
+  # Azure blob storage).
+  files:
+    .data/resnet.tar.gz: https://github.com/onnx/models/raw/master/vision/classification/resnet/model/resnet18-v2-7.tar.gz
+    .data/labels.txt: https://raw.githubusercontent.com/onnx/models/master/vision/classification/synset.txt
 
   # Dictionary mapping logger names to minimum levels. This is convenient for
   # suppressing overly verbose logs from consumed libraries.
