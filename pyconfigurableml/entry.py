@@ -41,9 +41,9 @@ def default_config_path(file: str) -> str:
 
 @typechecked
 def run_no_parse_args(main: Callable[[object, logging.Logger], None],
-        file: str,
-        log_level: str = 'INFO',
-        config_path: str = None) -> None:
+                      file: str,
+                      log_level: str = 'INFO',
+                      config_path: str = None) -> None:
     '''
     Handle log levels and parsing a YAML configuration file, **without**
     attempting to parse any command line arguments. Use `default_config_path`
@@ -68,7 +68,6 @@ def run_no_parse_args(main: Callable[[object, logging.Logger], None],
 
     logger = logging.getLogger()
     main(config, logger)
-
 
 
 @typechecked
