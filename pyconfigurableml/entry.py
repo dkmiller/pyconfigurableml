@@ -29,12 +29,59 @@ config_actions = [
 
 
 @typechecked
+def default_config_path(file: str) -> str:
+    '''
+    Returns `(directory containing file)/config.yml` as an absolute path.
+    '''
+    abs_path = os.path.abspath(file)
+    directory = os.path.dirname(abs_path)
+    result = os.path.join(directory, 'config.yml')
+    return result
+
+
+@typechecked
+def run_no_parse_args(main: Callable[[object, logging.Logger], None],
+        file: str,
+        name: str,
+        log_level: str = 'INFO',
+        config_path: str = None) -> None:
+    '''
+    Handle log levels and parsing a YAML configuration file, **without**
+    attempting to parse any command line arguments. Use `default_config_path`
+    to determine default configuration path.
+
+        Parameters:
+            main: programatic entry point for your program.
+            file: should be __file__ in the entry point of your script.
+            name: optionally __name__ in your script. This function will only
+                  call main if __name__ == '__main__'.
+            log_level: base log level.
+            config_path: path to configuration object.
+    '''
+    if config_path is None:
+        config_path = default_config_path(file)
+
+    with open(config_path, 'r') as config_file:
+        config = yaml.safe_load(config_file)
+
+    logging.basicConfig(level=log_level)
+
+    for func in config_actions:
+        config = func(config)
+
+    logger = logging.getLogger()
+    main(config, logger)
+
+
+
+@typechecked
 def run(main: Callable[[object, logging.Logger], None],
         file: str,
         name: str = '__main__') -> None:
     '''
-    Handle log levels and parsing a YAML configuration file. The default
-    path to the configuration file is `<caller directory>/config.yml`.
+    Handle log levels and parsing a YAML configuration file, obtaining path to
+    config file using command line argument parsing. The default path to the
+    configuration file is `<caller directory>/config.yml`.
 
         Parameters:
             main: programatic entry point for your program.
@@ -44,21 +91,10 @@ def run(main: Callable[[object, logging.Logger], None],
     '''
 
     if name == '__main__':
-        caller_dir = os.path.dirname(os.path.abspath(file))
-
         parser = argparse.ArgumentParser()
 
-        parser.add_argument('--config', default=os.path.join(caller_dir, 'config.yml'))
+        parser.add_argument('--config', default=default_config_path(file))
         parser.add_argument('--level', default='INFO')
         args = parser.parse_args()
 
-        with open(args.config, 'r') as config_file:
-            config = yaml.safe_load(config_file)
-
-        logging.basicConfig(level=args.level)
-
-        for func in config_actions:
-            config = func(config)
-
-        logger = logging.getLogger()
-        main(config, logger)
+        run_no_parse_args(main, file, name, args.level, args.config)
