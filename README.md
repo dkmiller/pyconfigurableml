@@ -33,7 +33,7 @@ You may also use this library to configure a set of unit tests. If you're using
 PyTest, 
 
 ```python
-from pyconfigurableml.entry import run
+from pyconfigurableml.entry import run_no_parse_args
 
 def custom_setup_logic(config, log):
   # TODO: put your logic here.
