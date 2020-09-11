@@ -42,7 +42,6 @@ def default_config_path(file: str) -> str:
 @typechecked
 def run_no_parse_args(main: Callable[[object, logging.Logger], None],
         file: str,
-        name: str,
         log_level: str = 'INFO',
         config_path: str = None) -> None:
     '''
@@ -53,8 +52,6 @@ def run_no_parse_args(main: Callable[[object, logging.Logger], None],
         Parameters:
             main: programatic entry point for your program.
             file: should be __file__ in the entry point of your script.
-            name: optionally __name__ in your script. This function will only
-                  call main if __name__ == '__main__'.
             log_level: base log level.
             config_path: path to configuration object.
     '''
@@ -97,4 +94,4 @@ def run(main: Callable[[object, logging.Logger], None],
         parser.add_argument('--level', default='INFO')
         args = parser.parse_args()
 
-        run_no_parse_args(main, file, name, args.level, args.config)
+        run_no_parse_args(main, file, args.level, args.config)

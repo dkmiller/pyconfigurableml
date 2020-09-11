@@ -1,8 +1,8 @@
 import argparse
 import logging
 import os
-from unittest.mock import patch
-from pyconfigurableml.entry import run
+from unittest import mock
+from pyconfigurableml.entry import run, run_no_parse_args
 import pytest
 import uuid
 
@@ -26,12 +26,12 @@ def test_run_config(config_name, level, called, main):
     config_path = os.path.join(dir_path, config_name)
 
     # https://stackoverflow.com/a/37343818
-    with patch(
+    with mock.patch(
             'argparse.ArgumentParser.parse_args',
             return_value=argparse.Namespace(config=config_path, level='info')
             ):
         # https://stackoverflow.com/a/31756485
-        with patch(f'logging.Logger.{level}') as mock_logger:
+        with mock.patch(f'logging.Logger.{level}') as mock_logger:
             run(main, __file__)
             mock_logger.assert_called_with(called)
 
@@ -46,7 +46,7 @@ def test_if_name_not_main_then_not_called():
         raise Exception('I should not be called')
     # https://stackoverflow.com/a/534847
     file = str(uuid.uuid4())
-    with patch('argparse.ArgumentParser.parse_args', return_value=None):
+    with mock.patch('argparse.ArgumentParser.parse_args', return_value=None):
         run(main, file, '__not_main__')
 
 
@@ -58,7 +58,7 @@ def test_munchify_works():
     config_path = os.path.join(dir_path, 'config2.yml')
 
     # https://stackoverflow.com/a/37343818
-    with patch(
+    with mock.patch(
             'argparse.ArgumentParser.parse_args',
             return_value=argparse.Namespace(config=config_path, level='info')
             ):
@@ -74,7 +74,7 @@ def test_munchify_not_called():
 
     # https://stackoverflow.com/a/37343818
     with pytest.raises(AttributeError):
-        with patch(
+        with mock.patch(
             'argparse.ArgumentParser.parse_args',
             return_value=argparse.Namespace(config=config_path, level='info')
         ):
@@ -93,7 +93,7 @@ def test_test_set_logger_levels_from_config_file(file, levels):
     config_path = os.path.join(dir_path, file)
 
     # https://stackoverflow.com/a/37343818
-    with patch(
+    with mock.patch(
             'argparse.ArgumentParser.parse_args',
             return_value=argparse.Namespace(config=config_path, level='info')
             ):
@@ -101,3 +101,20 @@ def test_test_set_logger_levels_from_config_file(file, levels):
 
     for k, v in levels.items():
         assert v == logging.getLogger(k).level
+
+
+@pytest.mark.parametrize('file,level,err,', [
+    ('config1.yml', 'INFO', ArithmeticError)
+])
+def test_run_no_parse_args__doesnt_use_command_line_args(file, level, err):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    config_path = os.path.join(dir_path, file)
+
+    m = mock.Mock()
+    m.side_effect = err
+
+    def main(cfg, _):
+        print(cfg)
+
+    with mock.patch('sys.argv', m):
+        run_no_parse_args(main, __file__, level, config_path)

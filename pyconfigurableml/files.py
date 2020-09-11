@@ -25,6 +25,7 @@ def download_url_to_file(url: str, path: str) -> None:
     https://stackoverflow.com/a/39217788
     '''
     try:
+        path = os.path.realpath(path)
         directory = os.path.dirname(path)
         os.makedirs(directory, exist_ok=True)
         with requests.get(url, stream=True) as req:
@@ -33,7 +34,7 @@ def download_url_to_file(url: str, path: str) -> None:
 
     # Attempt to clean up:
     # https://stackoverflow.com/a/10840586
-    except Exception as e:
+    except Exception:
         # https://www.loggly.com/blog/exceptional-logging-of-exceptions-in-python/
         log.exception(f'Could not download {url} to {path}')
         try:
