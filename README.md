@@ -40,7 +40,9 @@ def custom_setup_logic(config, log):
   pass
 
 def setup_module(module):
-  run(custom_setup_logic, __file__)
+  # You probably don't want to attempt to parse command line arguments
+  # inside unit tests.
+  run_no_parse_args(custom_setup_logic, __file__)
 ```
 
 ## Configuring this library
