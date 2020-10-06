@@ -9,7 +9,9 @@ from pyconfigurableml.files import (
 
 
 @pytest.mark.parametrize('url,file_name', [
-    ('https://picsum.photos/id/237/200', 'foo.png')
+    ('https://picsum.photos/id/237/200', 'foo.png'),
+    ('https://picsum.photos/id/237/200', 'dir/foo.png'),
+    ('https://picsum.photos/id/237/200', 'a/b/c/foo.png')
 ])
 def test_download_url_to_file(url, file_name, tmpdir):
     path = str(tmpdir.join(file_name))

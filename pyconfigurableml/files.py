@@ -25,14 +25,18 @@ def download_url_to_file(url: str, path: str) -> None:
     https://stackoverflow.com/a/39217788
     '''
     try:
+        path = os.path.realpath(path)
+        directory = os.path.dirname(path)
+        os.makedirs(directory, exist_ok=True)
         with requests.get(url, stream=True) as req:
             with open(path, 'wb') as file:
                 shutil.copyfileobj(req.raw, file)
 
     # Attempt to clean up:
     # https://stackoverflow.com/a/10840586
-    except:  # noqa: E722
-        log.error(f'Could not download {url} to {path}')
+    except Exception:
+        # https://www.loggly.com/blog/exceptional-logging-of-exceptions-in-python/
+        log.exception(f'Could not download {url} to {path}')
         try:
             os.remove(path)
         except OSError:

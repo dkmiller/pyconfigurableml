@@ -33,14 +33,16 @@ You may also use this library to configure a set of unit tests. If you're using
 PyTest, 
 
 ```python
-from pyconfigurableml.entry import run
+from pyconfigurableml.entry import run_no_parse_args
 
 def custom_setup_logic(config, log):
   # TODO: put your logic here.
   pass
 
 def setup_module(module):
-  run(custom_setup_logic, __file__)
+  # You probably don't want to attempt to parse command line arguments
+  # inside unit tests.
+  run_no_parse_args(custom_setup_logic, __file__)
 ```
 
 ## Configuring this library
