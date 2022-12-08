@@ -66,7 +66,7 @@ jobs:
     steps:
 
     - name: download wheel
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
 
     - name: pypi
       if: startsWith(github.ref, 'refs/tags')
