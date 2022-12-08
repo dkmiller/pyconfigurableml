@@ -1,3 +1,8 @@
+**:warning: Instead of this package, you should use [hydra](https://hydra.cc/),
+which is more general and robust.**
+
+----
+
 # Configurable ML
 
 [![python](https://github.com/dkmiller/pyconfigurableml/workflows/python/badge.svg)](https://github.com/dkmiller/pyconfigurableml/actions?query=workflow%3Apython)
